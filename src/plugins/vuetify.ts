@@ -16,12 +16,15 @@ export default new Vuetify({
 	},
 	theme: {
 		themes: {
-			// light: {
-			// 	primary: '#3f51b5',
-			// 	secondary: '#b0bec5',
-			// 	accent: '#8c9eff',
-			// 	error: '#b71c1c',
-			// },
+			light: {
+				// primary: '#0078d4',
+				// secondary: '#00BCD4',
+				// accent: '#03A9F4',
+				// info: '#546E7A',
+				// success: '#10b981',
+				// warning: '#f59e0b',
+				// error: '#ef4444',
+			},
 		},
 	},
 	breakpoint: {
@@ -31,6 +34,7 @@ export default new Vuetify({
 			md: 960,
 			lg: 1280,
 		},
+		mobileBreakpoint: 'md',
 		scrollBarWidth: 24,
 	},
 })

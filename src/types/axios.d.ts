@@ -3,7 +3,7 @@ import {AxiosRequestConfig, AxiosResponse} from 'axios'
 
 export interface DataModel<T> {
   code: number
-  msg?: string
+  message?: string
   data?: T
 }
 

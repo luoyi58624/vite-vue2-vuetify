@@ -30,7 +30,7 @@ export default class LoginPage extends Mixins(FormRules) {
 				.then(res => {
 					localStorage.setItem('token', res.data.token)
 					this.$router.push({ name: 'Dashboard' }).then(() => {
-						this.$message.success(res.msg)
+						this.$message.success(res.message)
 					})
 				})
 				.finally(() => {

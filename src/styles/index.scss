@@ -5,3 +5,9 @@
   font-family: system-ui, -apple-system, Arial, sans-serif;
   text-transform: none; // 禁止 vuetify 所有组件将英文转成大写
 }
+
+.v-navigation-drawer__content::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+

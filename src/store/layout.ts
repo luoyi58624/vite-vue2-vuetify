@@ -12,6 +12,7 @@ interface MenuModel {
 export const useAdminLayoutStore = defineStore('admin-layout', {
 	state: () => ({
 		darwer: true,
+		darwerWidth: 256,
 		menus: [] as Array<MenuModel>
 	}),
 	actions: {

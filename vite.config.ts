@@ -16,7 +16,7 @@ export default defineConfig({
 			imports: [
 				'pinia',
 				{
-					'vue-property-decorator': ['Component', 'Prop', 'Emit', 'Watch', 'Mixins', 'Ref', 'Provide', 'Inject']
+					'vue-property-decorator': ['Component', 'Prop', 'Emit', 'Watch', 'Model', 'Mixins', 'Ref', 'Provide', 'Inject']
 				}
 			],
 			dirs: ['./src/store', './src/utils'],

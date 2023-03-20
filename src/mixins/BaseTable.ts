@@ -3,13 +3,13 @@ import Vue from 'vue'
 @Component
 export default class BaseTable extends Vue {
 	tableData = []
-	selected = []
+	selectedData = []
 	tableLoading = false
 
-	getTableData() {
+	getTableData(api) {
 		this.tableLoading = true
 		request
-			.get(this['api'])
+			.get(api)
 			.then(res => {
 				this.tableData = res.data
 			})
@@ -18,7 +18,9 @@ export default class BaseTable extends Vue {
 			})
 	}
 
-	mounted() {
-		this.getTableData()
+	addTableData(api) {
+		request.patch(api).then(res => {
+			console.log(res)
+		})
 	}
 }

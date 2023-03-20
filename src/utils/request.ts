@@ -30,11 +30,11 @@ request.interceptors.response.use(
     }
     if (response.data.code == 401) {
       router.replace('/login').then(() => {
-        Notify.error(response.data.msg)
+        Notify.error(response.data.message)
       })
       return
     }
-    Notify.error(response.data.msg)
+    Notify.error(response.data.message)
     return Promise.reject(response.data)
   },
   error => {

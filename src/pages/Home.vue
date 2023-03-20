@@ -8,7 +8,7 @@
 			<v-btn class="ma-1" @click="execHelloWorldMethod">执行HelloWorld更新props方法</v-btn>
 			<v-icon>mdi-home</v-icon>
 			<hello-world ref="helloWorldRef" :title="title" @updateTitle="updateTitle"></hello-world>
-      <file-upload/>
+			<file-upload />
 		</div>
 	</v-container>
 </template>
@@ -18,9 +18,9 @@ import Vue from 'vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 
 @Component({
-  components:{
-    HelloWorld
-  }
+	components: {
+		HelloWorld
+	}
 })
 export default class HomePage extends Vue {
 	@Ref() helloWorldRef: HelloWorld
@@ -32,13 +32,13 @@ export default class HomePage extends Vue {
 		this.title = value
 	}
 
-  printComponent(){
-    console.log(this.helloWorldRef.title)
-  }
+	printComponent() {
+		console.log(this.helloWorldRef.title)
+	}
 
-  execHelloWorldMethod(){
-    this.helloWorldRef.updateTitle('hello')
-  }
+	execHelloWorldMethod() {
+		this.helloWorldRef.updateTitle('hello')
+	}
 }
 </script>
 

@@ -44,7 +44,7 @@ export const useAdminUserStore = defineStore('admin-user', {
 				localStorage.removeItem('token')
 				this.$reset()
 				router.replace('/login').then(() => {
-					Notify.success(res.msg)
+					Notify.success(res.message)
 				})
 			})
 		}

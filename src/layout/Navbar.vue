@@ -12,35 +12,27 @@ function openNavDrawer() {
 <template>
 	<v-app-bar app clipped-left elevation="3">
 		<div class="d-flex align-center">
-			<v-img
-				class="shrink mr-2"
-				:src="logo"
-				width="40"
-				alt="Blog Logo"
-				contain
-				@click="$vuetify.breakpoint.mobile && openNavDrawer()" />
+			<v-img class="shrink mr-2" :src="logo" width="40" alt="Blog Logo" contain @click="$vuetify.breakpoint.mobile && openNavDrawer()" />
 			<v-toolbar-title style="font-weight: bold">后台管理系统</v-toolbar-title>
 		</div>
 		<v-spacer />
+		<v-btn icon class="mr-2" @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+			<v-icon v-if="$vuetify.theme.dark">mdi-cached</v-icon>
+			<v-icon v-else>mdi-cached</v-icon>
+		</v-btn>
 		<!--用户菜单栏-->
 		<v-menu transition="slide-y-transition" nudge-bottom="5" offset-y bottom z-index="10000">
 			<template v-slot:activator="{ on, attrs }">
-				<v-avatar color="accent" size="40" v-bind="attrs" v-on="on">
-					<img
-						v-if="adminUserStore.avatarUrl"
-						v-bind="attrs"
-						v-on="on"
-						:src="adminUserStore.avatarUrl"
-						alt="user" />
-					<v-icon v-else dark>mdi-account-circle</v-icon>
-				</v-avatar>
+				<v-btn icon v-bind="attrs" v-on="on">
+					<v-icon>mdi-account-circle</v-icon>
+				</v-btn>
 			</template>
 			<v-list dense nav>
 				<v-list-item-group>
 					<v-list-item to="/userInfo">
 						<v-list-item-content>
 							<v-list-item-title>
-								<v-icon class="mr-2">mdi-account</v-icon>
+								<v-icon>mdi-account</v-icon>
 								个人信息
 							</v-list-item-title>
 						</v-list-item-content>
@@ -48,7 +40,7 @@ function openNavDrawer() {
 					<v-list-item>
 						<v-list-item-content>
 							<v-list-item-title>
-								<v-icon class="mr-2">mdi-update</v-icon>
+								<v-icon>mdi-update</v-icon>
 								修改密码
 							</v-list-item-title>
 						</v-list-item-content>
@@ -56,7 +48,7 @@ function openNavDrawer() {
 					<v-list-item @click="adminUserStore.logout()">
 						<v-list-item-content>
 							<v-list-item-title>
-								<v-icon class="mr-2">mdi-logout</v-icon>
+								<v-icon>mdi-logout</v-icon>
 								退出登录
 							</v-list-item-title>
 						</v-list-item-content>
