@@ -69,6 +69,12 @@ const adminRoutes: RouteConfig[] = [
 						meta: { title: '按钮' },
 						component: () => import('@/pages/test/vuetify/VuetifyButton.vue')
 					},
+					{
+						path: 'tree',
+						name: 'VuetifyTree',
+						meta: { title: '树形视图' },
+						component: () => import('@/pages/test/vuetify/VuetifyTree.vue')
+					},
 				]
 			},
 			{

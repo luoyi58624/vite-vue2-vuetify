@@ -15,7 +15,7 @@
 				<v-btn depressed :disabled="loading" @click="testConnection"> 测试连接</v-btn>
 				<v-spacer></v-spacer>
 				<v-btn text @click="show = false"> 取消</v-btn>
-				<v-btn text color="primary" :disabled="loading"> 保存</v-btn>
+				<v-btn text color="primary" :disabled="loading" @click="saveConnection"> 保存</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -27,6 +27,7 @@ import Vue from 'vue'
 @Component
 export default class AddConnection extends Vue {
 	@Inject() api
+	@Inject() getAllConnection
 	show = false
 	loading = false
 	formData = {
@@ -43,8 +44,21 @@ export default class AddConnection extends Vue {
 			.post(this.api + '/test-connection', this.formData, {
 				timeout: 60000
 			})
+			.then(() => {
+				this.$message.success('连接成功')
+			})
+			.finally(() => {
+				this.loading = false
+			})
+	}
+
+	saveConnection() {
+		this.loading = true
+		request
+			.post(this.api, this.formData)
 			.then(res => {
-				console.log(res)
+				this.show = false
+				this.getAllConnection()
 			})
 			.finally(() => {
 				this.loading = false

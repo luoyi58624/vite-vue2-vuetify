@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "strict": false,
+    "strict": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,6 +16,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "experimentalDecorators": true,
+    "noImplicitAny": false,
     "allowJs": true,
     "baseUrl": ".",
     "paths": {

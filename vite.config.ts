@@ -19,7 +19,7 @@ export default defineConfig({
 					'vue-property-decorator': ['Component', 'Prop', 'Emit', 'Watch', 'Model', 'Mixins', 'Ref', 'Provide', 'Inject']
 				}
 			],
-			dirs: ['./src/store', './src/utils'],
+			dirs: ['./src/store', './src/utils', './src/mixins'],
 			dts: true
 		}),
 		Components({

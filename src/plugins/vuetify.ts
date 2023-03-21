@@ -3,10 +3,12 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import zhHans from 'vuetify/lib/locale/zh-Hans'
+import Message from 'vuetify-message-snackbar'
+import { UserVuetifyPreset } from 'vuetify/types/services/presets'
 
 Vue.use(Vuetify)
 
-export default new Vuetify({
+const vuetifyPreset: UserVuetifyPreset = {
 	lang: {
 		locales: { zhHans },
 		current: 'zhHans'
@@ -24,17 +26,37 @@ export default new Vuetify({
 				// success: '#10b981',
 				// warning: '#f59e0b',
 				// error: '#ef4444',
-			},
-		},
+			}
+		}
 	},
 	breakpoint: {
 		thresholds: {
 			xs: 360,
 			sm: 640,
 			md: 960,
-			lg: 1280,
+			lg: 1280
 		},
 		mobileBreakpoint: 'md',
-		scrollBarWidth: 24,
+		scrollBarWidth: 24
+	}
+}
+
+const vuetify = new Vuetify(vuetifyPreset)
+
+Vue.use(Message, {
+	autoRemove: true,
+	closeButtonContent: '关闭',
+	class: 'margin-top-animation',
+	// 预设icon
+	presetIcon: {
+		success: 'mdi-checkbox-marked-circle'
 	},
+	vuetifyInstance: vuetify,
+	vuetifyPreset,
+	dark: true,
+	width: 300,
+	timeout: 3000,
+	height: 50
 })
+
+export default vuetify

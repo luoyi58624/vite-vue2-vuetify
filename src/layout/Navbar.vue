@@ -17,8 +17,8 @@ function openNavDrawer() {
 		</div>
 		<v-spacer />
 		<v-btn icon class="mr-2" @click="$vuetify.theme.dark = !$vuetify.theme.dark">
-			<v-icon v-if="$vuetify.theme.dark">mdi-cached</v-icon>
-			<v-icon v-else>mdi-cached</v-icon>
+			<v-icon v-if="$vuetify.theme.dark">mdi-theme-light-dark</v-icon>
+			<v-icon v-else>mdi-white-balance-sunny</v-icon>
 		</v-btn>
 		<!--用户菜单栏-->
 		<v-menu transition="slide-y-transition" nudge-bottom="5" offset-y bottom z-index="10000">

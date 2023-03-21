@@ -1,5 +1,4 @@
 <script lang="ts">
-import FormRules from '@/mixins/FormRules'
 import VPassword from '@/components/VPassword.vue'
 import { request } from '@/utils/request'
 
@@ -30,7 +29,7 @@ export default class LoginPage extends Mixins(FormRules) {
 				.then(res => {
 					localStorage.setItem('token', res.data.token)
 					this.$router.push({ name: 'Dashboard' }).then(() => {
-						this.$message.success(res.message)
+						// this.$message.success(res.message)
 					})
 				})
 				.finally(() => {

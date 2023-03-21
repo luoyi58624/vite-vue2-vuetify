@@ -92,8 +92,8 @@ export default class UserListPage extends Vue {
 }
 </script>
 
-<style lang="scss">
-.v-navigation-drawer__border {
+<style scoped lang="scss">
+::v-deep(.v-navigation-drawer__border) {
 	display: none;
 }
 

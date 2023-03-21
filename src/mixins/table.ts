@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 @Component
-export default class BaseTable extends Vue {
+export class BaseTable extends Vue {
 	tableData = []
 	selectedData = []
 	tableLoading = false
@@ -21,6 +21,12 @@ export default class BaseTable extends Vue {
 	addTableData(api) {
 		request.patch(api).then(res => {
 			console.log(res)
+		})
+	}
+
+	deleteTableData(api, id) {
+		request.delete(`${api}/${id}`).then(res => {
+			this.getTableData(api)
 		})
 	}
 }
