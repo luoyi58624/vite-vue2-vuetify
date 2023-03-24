@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import FormRules from '@/mixins/FormRules'
 
 export default Vue.extend({
 	name: 'VPassword',

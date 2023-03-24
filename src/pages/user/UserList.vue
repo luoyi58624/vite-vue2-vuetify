@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import BaseTable from '@/mixins/BaseTable'
 import AddUser from './AddUser.vue'
 
 @Component({

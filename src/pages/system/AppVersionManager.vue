@@ -19,16 +19,24 @@
 				</v-toolbar>
 			</template>
 			<template v-slot:item.actions="{ item }">
-				<v-btn text small color="error" @click="deleteTableData(api, item.id)">删除</v-btn>
+				<v-btn text small color="error" @click="deleteTableData(api, item._id)">删除</v-btn>
 			</template>
 		</v-data-table>
 		<v-dialog v-model="showAddDialog" max-width="600px">
 			<v-card>
 				<v-card-title>上传App</v-card-title>
-				<v-card-text>
+				<v-card-text class="mt-4">
 					<v-form ref="addFormRef">
-						<v-text-field label="版本号" type="number" min="0" :rules="rules.requiredRule" v-model="addFormData.versionNum" />
-						<v-file-input label="选择文件" prepend-icon="" truncate-length="50" :rules="rules.requiredRule" v-model="addFormData.file" />
+						<v-text-field label="版本名字" outlined :rules="rules.requiredRule" v-model="addFormData.versionName" />
+						<v-text-field label="版本号" outlined type="number" min="0" :rules="rules.requiredRule" v-model="addFormData.versionNum" />
+						<v-file-input
+							label="选择文件"
+							outlined
+							prepend-icon=""
+							truncate-length="50"
+							:rules="rules.requiredRule"
+							v-model="addFormData.file" />
+						<v-textarea label="更新描述" outlined auto-grow rows="4" v-model="addFormData.updateDesc" />
 					</v-form>
 				</v-card-text>
 				<v-card-actions>
@@ -50,7 +58,9 @@ export default class AppVersionManagerPage extends Mixins(BaseTable, FormRules) 
 	showAddDialog = false
 	addFormLoading = false
 	addFormData = {
-		versionNum: null,
+		versionName: '1.0.0',
+		versionNum: 100,
+		updateDesc: '',
 		file: null
 	}
 
@@ -59,7 +69,11 @@ export default class AppVersionManagerPage extends Mixins(BaseTable, FormRules) 
 			this.addFormLoading = true
 			const formData = new FormData()
 			formData.set('file', this.addFormData.file!)
-			formData.set('versionNum', this.addFormData.versionNum!)
+			formData.set('versionName', this.addFormData.versionName)
+			formData.set('versionNum', this.addFormData.versionNum.toString())
+			this.addFormData.updateDesc.split('\n').forEach((item, index) => {
+				formData.set(`updateDesc[${index}]`, item)
+			})
 			request
 				.post(this.api + '/upload', formData)
 				.then(() => {
@@ -72,12 +86,12 @@ export default class AppVersionManagerPage extends Mixins(BaseTable, FormRules) 
 		}
 	}
 
-  getNewVersion(){
-    request.get(`${this.api}/new-version`).then(res=>{
-      console.log(res)
-      // this.$message.success()
-    })
-  }
+	getNewVersion() {
+		request.get(`${this.api}/newVersion`).then(res => {
+			console.log(res)
+			// this.$message.success()
+		})
+	}
 
 	mounted() {
 		this.getTableData(this.api)
@@ -85,10 +99,12 @@ export default class AppVersionManagerPage extends Mixins(BaseTable, FormRules) 
 }
 
 const tableHeader: Array<DataTableHeader> = [
-	{ text: '编号', value: 'id' },
+	{ text: '编号', value: '_id' },
 	{ text: '名称', value: 'appName', sortable: false, align: 'center' },
+	{ text: '版本名字', value: 'versionName', sortable: false, align: 'center' },
 	{ text: '版本号', value: 'versionNum', sortable: false, align: 'center' },
-	{ text: '创建时间', value: 'createTime', sortable: false, align: 'center' },
+	{ text: '下载地址', value: 'downloadUrl', sortable: false, align: 'center' },
+	// { text: '创建时间', value: 'createTime', sortable: false, align: 'center' },
 	{ text: '操作', value: 'actions', sortable: false, align: 'center' }
 ]
 </script>
