@@ -3,7 +3,7 @@ import { verifyEmail } from '@/utils/commons'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export class FormRules extends Vue {
+export class FormRuleMixins extends Vue {
 	rules = {
 		// 非空规则
 		requiredRule: [(value: any) => !!value || '必填！']

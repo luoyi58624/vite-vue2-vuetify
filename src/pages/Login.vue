@@ -7,7 +7,7 @@ import { request } from '@/utils/request'
 		VPassword
 	}
 })
-export default class LoginPage extends Mixins(FormRules) {
+export default class LoginPage extends Mixins(FormRuleMixins) {
 	@Ref() readonly formRef
 	cardLoading = false // 卡片加载动画
 	disabled = false // 是否禁用登录按钮

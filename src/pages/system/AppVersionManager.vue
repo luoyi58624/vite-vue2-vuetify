@@ -4,6 +4,7 @@
 			class="elevation-2"
 			show-select
 			hide-default-footer
+			item-key="_id"
 			:items-per-page="100"
 			:loading="tableLoading"
 			:headers="tableHeader"
@@ -15,33 +16,60 @@
 					<v-divider class="mx-4" inset vertical></v-divider>
 					<v-spacer></v-spacer>
 					<v-btn class="mr-2" depressed @click="getNewVersion">获取最新版本</v-btn>
-					<v-btn depressed @click="showAddDialog = true">上传App</v-btn>
+					<v-btn depressed @click="showAddFormDialog">上传App</v-btn>
 				</v-toolbar>
 			</template>
 			<template v-slot:item.actions="{ item }">
-				<v-btn text small color="error" @click="deleteTableData(api, item._id)">删除</v-btn>
+				<v-btn text small color="primary" @click="showEditFormDialog(item)">编辑</v-btn>
+				<v-btn text small color="error" @click="deleteHandler(item._id)">删除</v-btn>
 			</template>
 		</v-data-table>
-		<v-dialog v-model="showAddDialog" max-width="600px">
-			<v-card>
-				<v-card-title>上传App</v-card-title>
+		<v-dialog v-model="showFormDialog" max-width="600px" @input="closeFormDialog">
+			<v-card :loading="formLoading">
+				<v-card-title>{{ isEdit ? '编辑App' : '上传App' }}</v-card-title>
 				<v-card-text class="mt-4">
 					<v-form ref="addFormRef">
-						<v-text-field label="版本名字" outlined :rules="rules.requiredRule" v-model="addFormData.versionName" />
-						<v-text-field label="版本号" outlined type="number" min="0" :rules="rules.requiredRule" v-model="addFormData.versionNum" />
+						<v-text-field label="版本名字" outlined :rules="rules.requiredRule" v-model="formData.versionName" />
+						<v-text-field label="版本号" outlined type="number" min="0" :rules="rules.requiredRule" v-model="formData.versionNum" />
+						<v-radio-group label="App更新类型" v-model="formData.packageType" row>
+							<v-radio label="热更新" :value="0"></v-radio>
+							<v-radio label="整包更新" :value="1"></v-radio>
+						</v-radio-group>
+						<v-radio-group label="选择平台" v-if="formData.packageType === 1" v-model="formData.platform" row>
+							<v-radio label="安卓" value="android"></v-radio>
+							<v-radio label="苹果" value="ios"></v-radio>
+						</v-radio-group>
 						<v-file-input
-							label="选择文件"
+							v-if="formData.packageType === 0 || formData.platform === 'android'"
+							:label="fileSelect.label"
 							outlined
+							show-size
 							prepend-icon=""
 							truncate-length="50"
+							:accept="fileSelect.accept"
 							:rules="rules.requiredRule"
-							v-model="addFormData.file" />
-						<v-textarea label="更新描述" outlined auto-grow rows="4" v-model="addFormData.updateDesc" />
+							v-model="formData.file" />
+						<v-text-field v-else label="AppStore安装包地址" outlined :rules="rules.requiredRule" v-model="formData.storeUrl" />
+						<v-textarea label="更新描述" outlined auto-grow rows="4" v-model="formData.updateDesc" />
 					</v-form>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn text color="primary" :loading="addFormLoading" :disabled="addFormLoading" @click="uploadApp"> 开始上传 </v-btn>
+					<v-btn text color="primary" :disabled="formLoading" @click="uploadApp">{{ isEdit ? '提交更新' : '上传App' }} </v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+		<v-dialog v-model="showAuthDialog" max-width="400" @input="clearAuth">
+			<v-card :loading="authLoading">
+				<v-card-title>需要验证</v-card-title>
+				<v-card-text class="mt-4">
+					<v-form>
+						<v-text-field label="请输入验证码" :error-messages="authError" v-model="authCode" @input="authError = ''"></v-text-field>
+					</v-form>
+				</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn text color="primary" :disabled="authLoading" @click="submitAuth">提交</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -52,36 +80,88 @@
 import { DataTableHeader } from 'vuetify'
 
 @Component
-export default class AppVersionManagerPage extends Mixins(BaseTable, FormRules) {
+export default class AppVersionManagerPage extends Mixins(BaseTableMixins, FormRuleMixins, UtilMixins) {
 	readonly api = '/app-version'
 	readonly tableHeader = tableHeader
-	showAddDialog = false
-	addFormLoading = false
-	addFormData = {
+	auth = false
+	isEdit = false
+	showFormDialog = false
+	formLoading = false
+	formData = {
 		versionName: '1.0.0',
 		versionNum: 100,
+		packageType: 0,
+		platform: 'android',
 		updateDesc: '',
+		storeUrl: '',
 		file: null
 	}
 
+	showAuthDialog = false
+	authLoading = false
+	authError = ''
+	authCode = ''
+
+	get fileSelect() {
+		return this.formData.packageType === 0
+			? { label: '选择wgt安装包', accept: '.wgt' }
+			: {
+					label: '选择apk安装包',
+					accept: '.apk'
+			  }
+	}
+
+	showAddFormDialog() {
+		this.isEdit = false
+		this.showFormDialog = true
+	}
+
+	showEditFormDialog(dataItem) {
+		this.isEdit = true
+		this.showFormDialog = true
+		Object.keys(dataItem).forEach(key => {
+			this.formData[key] = dataItem[key]
+		})
+		this.formData.updateDesc = dataItem.updateDesc.join('\n')
+	}
+
+	closeFormDialog() {
+		this.formData = {
+			versionName: '1.0.0',
+			versionNum: 100,
+			packageType: 0,
+			platform: 'android',
+			updateDesc: '',
+			storeUrl: '',
+			file: null
+		}
+		;(this.$refs.addFormRef as any).resetValidation()
+	}
+
 	uploadApp() {
+		if (!this.auth) {
+			this.showAuthDialog = true
+			return
+		}
 		if ((this.$refs.addFormRef as any).validate()) {
-			this.addFormLoading = true
+			this.formLoading = true
 			const formData = new FormData()
-			formData.set('file', this.addFormData.file!)
-			formData.set('versionName', this.addFormData.versionName)
-			formData.set('versionNum', this.addFormData.versionNum.toString())
-			this.addFormData.updateDesc.split('\n').forEach((item, index) => {
+			formData.set('file', this.formData.file!)
+			formData.set('versionName', this.formData.versionName)
+			formData.set('packageType', this.formData.packageType.toString())
+			formData.set('platform', this.formData.packageType === 0 ? 'all' : this.formData.platform)
+			formData.set('versionNum', this.formData.versionNum.toString())
+			this.formData.updateDesc.split('\n').forEach((item, index) => {
 				formData.set(`updateDesc[${index}]`, item)
 			})
 			request
 				.post(this.api + '/upload', formData)
 				.then(() => {
-					this.showAddDialog = false
+					this.showFormDialog = false
 					this.getTableData(this.api)
 				})
 				.finally(() => {
-					this.addFormLoading = false
+					this.formLoading = false
 				})
 		}
 	}
@@ -91,6 +171,36 @@ export default class AppVersionManagerPage extends Mixins(BaseTable, FormRules) 
 			console.log(res)
 			// this.$message.success()
 		})
+	}
+
+	deleteHandler(id) {
+		if (this.auth) {
+			this.deleteTableData(this.api, id)
+		} else {
+			this.showAuthDialog = true
+		}
+	}
+
+	submitAuth() {
+		if (this.authCode === '') {
+			this.authError = '请输入验证码'
+			return
+		}
+		this.authLoading = true
+		setTimeout(() => {
+			this.authLoading = false
+			if (this.authCode !== '654321') {
+				this.authError = '验证码错误'
+			} else {
+				this.auth = true
+				this.showAuthDialog = false
+			}
+		}, Math.random() * 1000 + 500)
+	}
+
+	clearAuth() {
+		this.authError = ''
+		this.authCode = ''
 	}
 
 	mounted() {

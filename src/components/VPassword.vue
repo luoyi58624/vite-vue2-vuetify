@@ -18,7 +18,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
 	name: 'VPassword',
-	mixins: [FormRules],
+	mixins: [FormRuleMixins],
 	props: {
 		password: String
 	},

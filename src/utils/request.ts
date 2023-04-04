@@ -4,7 +4,7 @@ import { isEmpty } from '@/utils/commons'
 import router from '@/router'
 
 const request = axios.create({
-	baseURL: import.meta.env.MODE == 'development' ? 'http://192.168.2.195:3001' : 'http://115.159.28.38:3001',
+	baseURL: import.meta.env.MODE == 'development' ? 'http://localhost:3001' : 'http://115.159.28.38:3001',
 	timeout: 5000
 })
 

@@ -32,7 +32,7 @@ import AddUser from './AddUser.vue'
 @Component({
 	components: { AddUser }
 })
-export default class UserListPage extends Mixins(BaseTable) {
+export default class UserListPage extends Mixins(BaseTableMixins) {
 	readonly api = '/user'
 	readonly tableHeader = tableHeader
   showAddUser = false

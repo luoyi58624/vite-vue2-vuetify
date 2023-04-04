@@ -13,7 +13,7 @@ function openNavDrawer() {
 	<v-app-bar app clipped-left elevation="3">
 		<div class="d-flex align-center">
 			<v-img class="shrink mr-2" :src="logo" width="40" alt="Blog Logo" contain @click="$vuetify.breakpoint.mobile && openNavDrawer()" />
-			<v-toolbar-title style="font-weight: bold">Demo</v-toolbar-title>
+			<v-toolbar-title style="font-weight: bold">MoWork App版本管理</v-toolbar-title>
 		</div>
 		<v-spacer />
 <!--		<v-btn icon class="mr-2" @click="$vuetify.theme.dark = !$vuetify.theme.dark">-->

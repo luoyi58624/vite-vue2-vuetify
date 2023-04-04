@@ -7,6 +7,7 @@
 			<v-btn class="ma-1" @click="printComponent">打印HelloWorld组件</v-btn>
 			<v-btn class="ma-1" @click="execHelloWorldMethod">执行HelloWorld更新props方法</v-btn>
 			<v-icon>mdi-home</v-icon>
+
 			<hello-world ref="helloWorldRef" :title="title" @updateTitle="updateTitle"></hello-world>
 			<file-upload />
 		</div>
