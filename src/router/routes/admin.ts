@@ -2,12 +2,6 @@ import { RouteConfig } from 'vue-router'
 import SectionRouterView from '@/components/SectionRouterView.vue'
 
 const adminRoutes: RouteConfig[] = [
-	{
-		path: '',
-		name: 'AppVersionManager',
-		meta: { title: 'App版本管理' },
-		component: () => import('@/pages/system/AppVersionManager.vue')
-	},
 	// {
 	// 	path: 'home',
 	// 	name: 'Home',
@@ -17,6 +11,18 @@ const adminRoutes: RouteConfig[] = [
 	// 	},
 	// 	component: () => import('@/pages/Home.vue')
 	// },
+	// {
+	// 	path: 'version',
+	// 	name: 'AppVersionManager',
+	// 	meta: { title: 'App版本管理' },
+	// 	component: () => import('@/pages/system/AppVersionManager.vue')
+	// },
+	{
+		path: 'version2',
+		name: 'AppVersionManager2',
+		meta: { title: 'App版本管理' },
+		component: () => import('@/pages/system/AppVersionManager2.vue')
+	},
 	// {
 	// 	path: 'user',
 	// 	redirect: '/user/list',

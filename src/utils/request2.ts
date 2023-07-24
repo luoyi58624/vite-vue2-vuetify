@@ -3,14 +3,14 @@ import { Notify } from 'vuetify-message-snackbar'
 import { isEmpty } from '@/utils/commons'
 import router from '@/router'
 
-const request = axios.create({
+const request2 = axios.create({
 	// baseURL: 'http://115.159.28.38:10008',
-	baseURL: import.meta.env.MODE == 'development' ? 'http://localhost:3000' : 'http://115.159.28.38:3001',
+	baseURL: import.meta.env.MODE == 'development' ? 'http://localhost:3001' : 'http://115.159.28.38:10008',
 	timeout: 5000
 })
 
 // 请求拦截
-request.interceptors.request.use(
+request2.interceptors.request.use(
 	request => {
 		if (!isEmpty(localStorage.getItem('token'))) {
 			request.headers.token = localStorage.getItem('token')
@@ -23,7 +23,7 @@ request.interceptors.request.use(
 )
 
 // 响应拦截
-request.interceptors.response.use(
+request2.interceptors.response.use(
 	response => {
 		// 如果为200直接返回服务器对象
 		if (response.data.code == 200) {
@@ -65,4 +65,4 @@ request.interceptors.response.use(
 		return Promise.reject(error)
 	}
 )
-export {axios, request}
+export {axios, request2}
